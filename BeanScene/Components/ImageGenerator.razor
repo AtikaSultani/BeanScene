@@ -1,0 +1,30 @@
+﻿@* Components/ImageGenerator *@
+<h2>Dynamic image generator - display text as image</h2>
+
+<div class="p-3 border rounded bg-light">
+    <input @bind="text" class="form-control" placeholder="Enter text" />
+    <button class="btn btn-primary mt-2" @onclick="DrawMyText">Draw text</button>
+
+    @if (!string.IsNullOrEmpty(imageUrl))
+    {
+        <div class="mt-3">
+            <img src="@imageUrl" alt="Text presented as Image" class="border shadow-sm" />
+        </div>
+    }
+</div>
+
+@code {
+    private string text = "Hello MVC + Blazor";
+    private string? imageUrl;
+
+    protected override void OnInitialized() => DrawMyText();
+
+    private void DrawMyText()
+    {
+        string textToUse = string.IsNullOrWhiteSpace(text) ? "Hello MVC + Blazor" : text;
+        // add a timestamp to force image refresh
+        imageUrl = $"/api/image/drawmytext?text={textToUse}&t={DateTime.Now.Ticks}";
+    }
+}
+
+    

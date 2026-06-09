@@ -1,0 +1,144 @@
+@model BeanScene.Models.Reservation
+
+@{
+    ViewData["Title"] = "Reservation Details";
+}
+
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+        <div class="card-header bg-dark text-white">
+            @{
+                var reservationTable =
+                    Model.ReservationTables?.FirstOrDefault();
+            }
+            <h3 class="mb-0">
+                Reservation Details
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <strong>First Name</strong>
+                    <p>@Model.FirstName</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Last Name</strong>
+                    <p>@Model.LastName</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Email</strong>
+                    <p>@Model.Email</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Phone Number</strong>
+                    <p>@Model.PhoneNumber</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Reservation Date</strong>
+                    <p>@Model.ReservationDate?.ToString("dd MMM yyyy")</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Start Time</strong>
+                    <p>@Model.StartTime</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Number Of Guests</strong>
+                    <p>@Model.NumberOfGuests</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Duration</strong>
+                    <p>@Model.DurationMinutes minutes</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Source</strong>
+                    <p>@Model.Source</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Sitting</strong>
+                    <p>
+                        🍽 @Model.Sitting?.SittingType
+                        <br />
+                        <small class="text-muted">
+                            @Model.Sitting?.StartTime -
+                            @Model.Sitting?.EndTime
+                        </small>
+                    </p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Area</strong>
+                    <p>
+                        @(reservationTable?.Table?.Area?.AreaName ?? "N/A")
+                    </p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Table</strong>
+                    <p>
+                        @(reservationTable?.Table?.TableCode ?? "N/A")
+                    </p>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <strong>Notes</strong>
+                    <p>@(string.IsNullOrEmpty(Model.Notes) ? "No notes provided" : Model.Notes)</p>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <strong>Status</strong>
+
+                    @if (Model.Status == "Confirmed")
+                    {
+                        <span class="badge bg-success fs-6">
+                            Confirmed
+                        </span>
+                    }
+                    else if (Model.Status == "Pending")
+                    {
+                        <span class="badge bg-warning text-dark fs-6">
+                            Pending
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger fs-6">
+                            @Model.Status
+                        </span>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-light">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.ReservationId"
+               class="btn btn-warning">
+                ✏ Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                ← Back to List
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

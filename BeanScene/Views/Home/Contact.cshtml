@@ -1,0 +1,239 @@
+﻿@model BeanScene.ViewModels.ContactViewModel
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="container mt-5">
+
+    
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">
+            Contact Bean Scene
+        </h1>
+
+        <p class="lead text-muted">
+            We'd love to hear from you. Send us a message or visit us for a coffee.
+        </p>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="row">
+
+        <!-- Contact Information -->
+        <div class="col-md-5">
+
+            <div class="card shadow border-0 mb-4">
+
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        Contact Information
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>📍 Address</strong><br />
+                        Sydney, NSW, Australia
+                    </p>
+
+                    <p>
+                        <strong>📞 Phone</strong><br />
+                        02 1234 5678
+                    </p>
+
+                    <p>
+                        <strong>✉ Email</strong><br />
+                        info@beanscene.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        Opening Hours
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <p>Monday - Friday: 7:00 AM - 9:00 PM</p>
+                    <p>Saturday: 8:00 AM - 10:00 PM</p>
+                    <p>Sunday: 8:00 AM - 8:00 PM</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-md-7">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        Send Us a Message
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="Contact"
+                          method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Name"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Name"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Email"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Message"
+                                   class="form-label">
+                            </label>
+
+                            <textarea asp-for="Message"
+                                      rows="6"
+                                      class="form-control">
+                        </textarea>
+
+                            <span asp-validation-for="Message"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Send Message
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    @{
+    ViewData["Title"] = "Chat Room";
+}
+@* douling linked list chat box *@
+<div class="container mt-4">
+    <h3>Simple Chat</h3>
+    <div class="mb-2">
+     <input id="userInput" class="form-control mb-2" placeholder="Enter your name" />
+     <input id="messageInput" class="form-control mb-2" placeholder="Type a message" />
+     <button id="sendButton" class="btn btn-primary">Send</button>
+    </div>
+
+    <ul id="messagesList" class="list-group"></ul>
+</div>
+
+   
+ 
+
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function generateImage() {
+
+            let text =
+                document.getElementById("txtMessage").value;
+
+            document.getElementById("generatedImage").src =
+                "/api/image/drawmytext?text="
+                + encodeURIComponent(text)
+                + "&t="
+                + new Date().getTime();
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        // Create a connection to the SignalR hub
+        // Listen for incoming messages from the hub - receive messages
+        // this is the pipe through which messages will travel between browser and server
+        // it is the IPC channel browser <-> server <-> other browsers
+        const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chathub")
+        .build();
+
+        // listen for server-side broadcast
+        // when server invokes this method, all connected browsers
+        // will receive the message and execute this callback
+        // this is the real-time IPC event happening the browser
+        connection.on("ReceiveMessage", (user, message, time) => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.textContent = `${time} | ${user}: ${message}`;
+        document.getElementById("messagesList").appendChild(li);
+        });
+
+        // Start the connection to the hub
+        // if it fails (e.g. server is not running), log the error to console
+        connection.start().catch(err => console.error(err.toString()));
+
+        // Send a message to the hub when the send button is clicked
+        // this will invoke the SendMessage method on the server-side hub
+        // the server will then broadcast this message to all connected clients
+        // this is the client -> server part of IPC flow
+        document.getElementById("sendButton").addEventListener("click", () => {
+        const user = document.getElementById("userInput").value;
+        const message = document.getElementById("messageInput").value;
+        connection.invoke("SendMessage", user, message);
+        document.getElementById("messageInput").value = "";
+        });
+    </script>
+
+
+}

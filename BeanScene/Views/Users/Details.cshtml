@@ -1,0 +1,74 @@
+﻿@model BeanScene.Data.ApplicationUser
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-4">
+
+    
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+            <h3>User Details</h3>
+        </div>
+
+        <div class="card-body text-center">
+
+            <img src="@(string.IsNullOrEmpty(Model.PhotoPath)
+                             ? "/images/default-user.png"
+                             : Model.PhotoPath)"
+                 width="150"
+                 height="150"
+                 class="rounded-circle border mb-3"
+                 style="object-fit:cover;" />
+
+            <h4>@Model.Email</h4>
+
+            <hr />
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <strong>Email</strong>
+                    <p>@Model.Email</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Role</strong>
+                    <p>@ViewBag.Role</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Created Date</strong>
+                    <p>@Model.CreatedDate.ToString("dd MMM yyyy")</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Phone Number</strong>
+                    <p>@(Model.PhoneNumber ?? "N/A")</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+    
+
+</div>

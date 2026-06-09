@@ -1,0 +1,299 @@
+@model IEnumerable<BeanScene.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold mb-0">
+            Reservation Management
+        </h2>
+
+        <small class="text-muted">
+            Manage customer reservations
+        </small>
+    </div>
+
+
+    <a asp-action="Create"
+       class="btn btn-success">
+        + Create Reservation
+    </a>
+
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <form asp-action="Index" method="get">
+
+            <div class="row g-2">
+
+                <div class="col-md-4">
+                    <input type="text"
+                           name="searchString"
+                           value="@ViewData["CurrentFilter"]"
+                           class="form-control"
+                           placeholder="Search customer..." />
+                </div>
+
+                <div class="col-md-3">
+                    <input type="date"
+                           name="fromDate"
+                           value="@ViewData["FromDate"]"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <input type="date"
+                           name="toDate"
+                           value="@ViewData["ToDate"]"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        🔍 Search
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                    <a asp-action="ExportExcel"
+                       asp-route-searchString="@ViewData["CurrentFilter"]"
+                       asp-route-fromDate="@ViewData["FromDate"]"
+                       asp-route-toDate="@ViewData["ToDate"]"
+                       class="btn btn-success w-100">
+                        📋 Print Report
+                    </a>
+                </div>
+
+                <div class="col-md-2">
+                    <a asp-action="Index"
+                       class="btn btn-secondary w-100">
+                        ✖ Clear
+                    </a>
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<div class="card shadow border-0">
+
+    <div class="card-body">
+<p>
+    
+</p>
+<table class="table table-hover align-middle">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Customer</th>
+            <th>Reservation</th>
+            <th>Guests</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    <strong>
+                        @item.FirstName @item.LastName
+                    </strong>
+
+                    <br />
+
+                    <small class="text-muted">
+                        @item.Email
+                    </small>
+
+                    <br />
+
+                    <small class="text-muted">
+                        @item.PhoneNumber
+                    </small>
+                </td>
+
+                <td>
+                    <strong>
+                        @item.ReservationDate?.ToString("dd MMM yyyy")
+                    </strong>
+
+                    <br />
+
+                    <small class="text-muted">
+                        @item.Sitting?.SittingType
+                    </small>
+
+                    <br />
+
+                    <small class="text-muted">
+                        @item.StartTime
+                    </small>
+                </td>
+
+                <td>
+                    <span class="badge bg-secondary fs-6">
+                        @item.NumberOfGuests
+                    </span>
+                </td>
+
+                <td>
+
+                    <form asp-action="UpdateStatus"
+                          method="post">
+
+                        <input type="hidden"
+                               name="reservationId"
+                               value="@item.ReservationId" />
+
+                        <select name="status"
+                                class="form-select form-select-sm">
+
+                            <option value="Pending"
+                                    selected="@(item.Status == "Pending")">
+                                Pending
+                            </option>
+
+                            <option value="Confirmed"
+                                    selected="@(item.Status == "Confirmed")">
+                                Confirmed
+                            </option>
+
+                            <option value="Cancelled"
+                                    selected="@(item.Status == "Cancelled")">
+                                Cancelled
+                            </option>
+
+                            <option value="Completed"
+                                    selected="@(item.Status == "Completed")">
+                                Completed
+                            </option>
+
+                        </select>
+
+                        <button type="submit"
+                                class="btn btn-primary btn-sm mt-2 w-100">
+                            Save
+                        </button>
+
+                    </form>
+
+                </td>
+
+                <td>
+
+                    <div class="d-flex gap-2">
+
+                        <a asp-action="Edit"
+                           asp-route-id="@item.ReservationId"
+                                   class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                               
+
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.ReservationId"
+                                   class="btn btn-info btn-sm">
+                                    <i class="bi bi-eye"></i>
+                        </a>
+
+                                <button type="button"
+                                        
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                        data-id="@item.ReservationId"
+                                        class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                    </div>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Delete Reservation
+                </h5>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this reservation?
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <form id="deleteForm"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var deleteModal =
+            document.getElementById('deleteModal');
+
+        deleteModal.addEventListener(
+            'show.bs.modal',
+            function (event) {
+
+                var button =
+                    event.relatedTarget;
+
+                var id =
+                    button.getAttribute('data-id');
+
+                document.getElementById('deleteForm')
+                    .action =
+                    '/Reservations/Delete/' + id;
+            });
+    });
+</script>

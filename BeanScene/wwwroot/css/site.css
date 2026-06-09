@@ -1,0 +1,111 @@
+html {
+  font-size: 14px;
+}
+
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.booking-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    margin-bottom: 20px;
+}
+
+.table-btn {
+    width: 80px;
+    margin: 5px;
+}
+
+.sitting-card {
+    transition: .3s;
+    cursor: pointer;
+}
+
+.sitting-card {
+    transition: all 0.3s ease;
+}
+
+    .sitting-card:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    }
+
+.reservation-card {
+    max-width: 1000px;
+    margin: 30px auto;
+    border-radius: 20px;
+    background-color: #f8fafc; /* Ultra-modern soft slate/off-white */
+    border: 1px solid #e2e8f0; /* Subtle border */
+    border-radius: 12px; /* Smooth, rounded corners */
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Soft 3D lift */
+    
+    margin: 0 auto;
+}
+
+.table-btn {
+    width: 90px;
+    margin: 5px;
+}
+
+    .table-btn.active {
+        background-color: #198754;
+        color: white;
+    }
+
+
+.card {
+    transition: all 0.3s ease;
+}
+
+    .card:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    }
+.reservation-card {
+    background: #f8fafc!important;
+}
+.table-btn {
+    margin: 5px;
+    min-width: 120px;
+}
+
+    .table-btn.active {
+        background-color: #198754;
+        color: white;
+    }
+    .table-btn.active {
+        background-color: #198754 !important;
+        color: white !important;
+        border-color: #198754 !important;
+    }
+#messagesList {
+    max-height: 400px;
+    overflow-y: scroll;
+    background: #f8f9fa;
+    border-radius: 8px;
+}

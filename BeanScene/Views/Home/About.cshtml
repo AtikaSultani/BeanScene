@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container">
+
+   
+    <div class="text-center py-5">
+
+        <h1 class="display-4 fw-bold">
+            About Bean Scene
+        </h1>
+
+        <p class="lead">
+            Premium coffee, delicious meals and memorable dining experiences.
+        </p>
+
+        <img src="/images/cafe.jpg"
+             class="img-fluid rounded shadow"
+             style="max-height:400px;" />
+             
+
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="col-md-6">
+
+            <h2>Our Story</h2>
+
+            <p>
+                Bean Scene was created with a simple goal:
+                to provide exceptional coffee and fresh meals
+                in a welcoming atmosphere.
+            </p>
+
+            <p>
+                Whether you're meeting friends, enjoying lunch,
+                or booking a table for a special occasion,
+                Bean Scene delivers an unforgettable experience.
+            </p>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    ☕ Premium Coffee
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    🍽 Fresh Ingredients
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    📱 Easy Online Reservations
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row text-center mt-5">
+
+        <div class="col-md-4">
+            <h2>5000+</h2>
+            <p>Happy Customers</p>
+        </div>
+
+        <div class="col-md-4">
+            <h2>1000+</h2>
+            <p>Reservations</p>
+        </div>
+
+        <div class="col-md-4">
+            <h2>50+</h2>
+            <p>Menu Items</p>
+        </div>
+
+    </div>
+
+    <div class="text-center my-5">
+
+        <a asp-controller="Home"
+           asp-action="Reservation"
+           class="btn btn-primary btn-lg">
+            Book a Table
+        </a>
+
+    </div>
+
+   
+ 
+
+</div>

@@ -1,0 +1,50 @@
+@model IEnumerable<BeanScene.Models.Area>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+<h1>Area Managment</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+</div>
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.AreaName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Description)
+            </td>
+           
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.AreaId" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-square"></i></a>
+        |
+                    <a asp-action="Details" asp-route-id="@item.AreaId" class="btn btn-info btn-sm">
+                        <i class="bi bi-eye"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.AreaId" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

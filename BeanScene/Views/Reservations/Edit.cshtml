@@ -1,0 +1,343 @@
+@model BeanScene.Models.Reservation
+
+@{
+    ViewData["Title"] = "Reservation";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">
+        Edit Reservation
+    </h1>
+
+
+</div>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card border-primary">
+            <div class="card-body">
+                <h5>🍳 Breakfast</h5>
+                <p>08:00 AM - 11:00 AM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-success">
+            <div class="card-body">
+                <h5>🥗 Lunch</h5>
+                <p>12:00 PM - 03:00 PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-danger">
+            <div class="card-body">
+                <h5>🍽 Dinner</h5>
+                <p>05:00 PM - 10:00 PM</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="reservation-card">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="ReservationId" />
+
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <h4 class="mb-3">Guest Information</h4>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <h4 class="mb-3">Reservation Details</h4>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="ReservationDate"></label>
+                <input asp-for="ReservationDate" type="date" class="form-control" />
+                <span asp-validation-for="ReservationDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="NumberOfGuests"></label>
+                <input asp-for="NumberOfGuests" class="form-control" />
+                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="SittingId">Sitting</label>
+                <select asp-for="SittingId" class="form-control">
+
+                    <option value="">-- Select Sitting --</option>
+
+                    @foreach (var sitting in Model.Sittings)
+                    {
+                        <option value="@sitting.SittingId">
+                            @sitting.SittingType
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="StartTime"></label>
+                <input asp-for="StartTime"
+                       type="time"
+                       value="@Model.StartTime.ToString("HH\\:mm")"
+                       class="form-control" />
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DurationMinutes"></label>
+            <input asp-for="DurationMinutes" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Status" class="form-label"></label>
+
+            <select asp-for="Status" class="form-select">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Source"></label>
+
+            <select asp-for="Source" class="form-select">
+                <option value="Online">Online</option>
+                <option value="Walk-In">Walk-In</option>
+                <option value="Phone">Phone</option>
+            </select>
+        </div>
+
+        <hr />
+
+        <h4 class="mb-3">Table Selection</h4>
+
+        <div class="mb-3">
+            <label>Area</label>
+
+            <select asp-for="SelectedAreaId"
+                    class="form-control"
+                    id="areaSelect">
+
+                @foreach (var area in Model.Areas)
+                {
+                    <option value="@area.AreaId">
+                        @area.AreaName
+                    </option>
+                }
+
+            </select>
+        </div>
+
+        <input type="hidden"
+               asp-for="SelectedTableId"
+               id="SelectedTableId" />
+        <span asp-validation-for="SelectedTableId"
+              class="text-danger"></span>
+
+        <div id="tableContainer">
+
+            @foreach (var table in Model.Tables)
+            {
+                <button type="button"
+                        class="btn btn-outline-primary table-btn m-1"
+                        data-id="@table.TableId"
+                        data-area="@table.AreaId">
+
+                    @table.TableCode
+                    (Seats @table.Capacity)
+
+                </button>
+            }
+
+        </div>
+
+            
+        <div class="mt-4 mb-3">
+            <label asp-for="Notes"></label>
+            <textarea asp-for="Notes" class="form-control" rows="4"></textarea>
+        </div>
+
+        <button type="submit"
+                class="btn btn-success btn-lg w-100">
+            Edit Reservation
+        </button>
+
+          
+    </form>
+
+</div>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const areaSelect =
+            document.querySelector("[name='SelectedAreaId']");
+
+        const hiddenTable =
+            document.getElementById("SelectedTableId");
+
+        areaSelect.addEventListener("change", function () {
+
+            document.getElementById("mainTables").style.display = "none";
+            document.getElementById("outsideTables").style.display = "none";
+            document.getElementById("balconyTables").style.display = "none";
+
+            if (this.value == "4")
+                document.getElementById("mainTables").style.display = "block";
+
+            if (this.value == "5")
+                document.getElementById("outsideTables").style.display = "block";
+
+            if (this.value == "6")
+                document.getElementById("balconyTables").style.display = "block";
+        });
+
+        document.querySelectorAll(".table-btn")
+    .forEach(button => {
+
+        // Highlight the currently selected table when page loads
+        if (hiddenTable.value == button.dataset.id)
+        {
+            button.classList.add("active");
+        }
+
+        button.addEventListener("click", function () {
+
+            hiddenTable.value = this.dataset.id;
+
+            document.querySelectorAll(".table-btn")
+                .forEach(b => b.classList.remove("active"));
+
+            this.classList.add("active");
+        });
+
+    });
+
+    });
+
+</script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const areaSelect =
+            document.getElementById("areaSelect");
+
+        function filterTables()
+        {
+            const selectedArea =
+                areaSelect.value;
+
+            document.querySelectorAll(".table-btn")
+                .forEach(button =>
+                {
+                    if (button.dataset.area === selectedArea)
+                    {
+                        button.style.display = "inline-block";
+                    }
+                    else
+                    {
+                        button.style.display = "none";
+                    }
+                });
+        }
+
+        filterTables();
+
+        areaSelect.addEventListener("change", filterTables);
+            console.log("Area changed");
+    console.log("Before:", hiddenTable.value);
+
+    hiddenTable.value = "";
+
+    console.log("After:", hiddenTable.value);
+
+    });
+
+</script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const hiddenTable =
+            document.getElementById("SelectedTableId");
+
+        document.querySelectorAll(".table-btn")
+            .forEach(button => {
+
+                button.addEventListener("click", function () {
+
+                    hiddenTable.value =
+                        this.dataset.id;
+
+                    document.querySelectorAll(".table-btn")
+                        .forEach(b =>
+                            b.classList.remove("active"));
+
+                    this.classList.add("active");
+                });
+
+            });
+
+    });
+
+</script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

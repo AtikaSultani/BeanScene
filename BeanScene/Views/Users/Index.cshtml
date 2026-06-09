@@ -1,0 +1,157 @@
+﻿@model IEnumerable<BeanScene.ViewModels.UserRoleViewModel>
+
+@{
+    ViewData["Title"] = "Employee Management";
+}
+
+<div class="container mt-4">
+
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="mb-0">
+            Employee Management
+        </h2>
+
+        <a asp-action="Create"
+           class="btn btn-success">
+            + Add Employee
+        </a>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body p-0">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th style="width:80px;">Photo</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th style="width:350px;">Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <img src="@(string.IsNullOrEmpty(user.PhotoPath)
+                                                                             ? "/images/default-user.png"
+                                                                             : user.PhotoPath)"
+                                     width="50"
+                                     height="50"
+                                     class="rounded-circle border"
+                                     style="object-fit:cover;" />
+
+                            </td>
+
+                            <td>
+                                @user.Email
+                            </td>
+
+                            <td>
+
+                                @if (user.CurrentRole == "Manager")
+                                {
+                                    <span class="badge bg-primary">
+                                        Manager
+                                    </span>
+                                }
+                                else if (user.CurrentRole == "Staff")
+                                {
+                                    <span class="badge bg-success">
+                                        Staff
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        Member
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                <form asp-action="UpdateRole"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="userId"
+                                           value="@user.UserId" />
+
+                                    <div class="d-flex gap-2 flex-wrap">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@user.UserId"
+                                           class="btn btn-info btn-sm">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@user.UserId"
+                                           class="btn btn-warning btn-sm">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+
+                                        @if (user.IsEmployee)
+                                        {
+                                            <select name="role"
+                                                    class="form-select form-select-sm"
+                                                    style="width:130px;">
+
+                                                <option value="Staff"
+                                                        selected="@(user.CurrentRole == "Staff")">
+                                                    Staff
+                                                </option>
+
+                                                <option value="Manager"
+                                                        selected="@(user.CurrentRole == "Manager")">
+                                                    Manager
+                                                </option>
+
+                                            </select>
+
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-sm">
+                                                Save
+                                            </button>
+                                        }
+
+                                        <button formaction="@Url.Action("DeleteUser")"
+                                                formmethod="post"
+                                                onclick="return confirm('Are you sure you want to delete this user?');"
+                                                class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+    
+
+</div>
