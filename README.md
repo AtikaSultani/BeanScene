@@ -68,15 +68,34 @@ cd BeanScene
    ```bash
    dotnet run
    ```
-4. Open `https://localhost:5001` (or whichever port it starts on) in your browser
+4. Open `https://localhost:5001` 
 
-![](image.png)
 ## Screenshots
-Aailable in the screenshots folder
+
+### Confirmation Email
+git mv "screenshots/confirmation email.png" "screenshots/confirmation-email.png"
+
+### Home Page
+![Home Page](screenshots/homepage.png)
+
+### Login Page
+![Login Page](screenshots/loginpage.png)
+
+### Reservation Page
+![Reservation Page](screenshots/reservationpage.png)
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/dashbourdpage.png)
+
+### Users Page
+![Users Page](screenshots/userspage.png)
+
+
 
 ## What I learned
 
 This project pushed me to work with a few things I hadn't touched much before — SignalR for real-time features and SkiaSharp for image generation were both new territory. Beyond the technical stack, it was also a good exercise in structuring a larger MVC app cleanly, handling authentication and role-based access properly, and thinking through the whole flow from a customer booking a table to a manager exporting a report.
+
 
 ## Author
 
