@@ -85,6 +85,3 @@ Software Developer / QA Engineer, based in Sydney, Australia
 GitHub: [github.com/AtikaSultani](https://github.com/AtikaSultani)
 LinkedIn: *(add your URL here)*
 
-## License
-
-Built for educational purposes as part of my Diploma of Information Technology (Advanced Programming) at TAFE NSW.
